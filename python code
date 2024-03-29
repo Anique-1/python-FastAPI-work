@@ -1,0 +1,44 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app=FastAPI()
+
+students={
+    1:{
+        "name":"Anique",
+        "age":14,
+        "class":"cs",
+    }
+}
+
+class Student(BaseModel):
+    name : str
+    age : int
+    Class : str
+
+@app.get("/student")
+def getstudent():
+    return students
+
+
+@app.get("/student/{student_id}")
+def get_student(student_id: int):
+    return students[student_id]
+
+@app.post("/create-student/{student_id}")
+def create_student(student_id:int ,students : Student):
+    if student_id in students:
+        return {"error":"student exisits"}
+    
+    students[student_id]==Student
+    return students[student_id]
+
+@app.put("/update_student/{student_id}")
+def update_student(student_id:int,students:Student):
+    students[student_id]==Student
+    return students[student_id]
+
+@app.delete("/delete_student/{student_id}")
+def delete_student(student_id:int):
+    del students[student_id]
+    return{"message":"student deleted"}
